@@ -1,0 +1,77 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: monospace ,Verdana, Geneva, Tahoma, sans-serif;
+    line-height : 1.5;
+}
+header{
+    font-family: monospace, sans-serif;
+    margin-bottom :1.5rem;
+    padding: 0.5rem;
+    background: #b8e5ff;
+    border-radius: 6px; 
+}
+
+main {
+    display:flex;
+    gap:2rem;
+    padding: 1rem;
+}
+
+.settings {
+    flex:  0px 0px 0px;
+}
+
+#gallery {
+    flex: 1;
+}
+
+.controls > div {
+    margin-bottom :1.5rem;
+    padding: 0.5rem;
+    background: #cbe7f7;
+    border-radius: 6px;
+}
+
+#btn-start{
+    background : #86c1ca;
+    color: white;
+    border :none;
+    padding: 0.5rem 1rem;  
+    border-radius : 4px;
+    cursor : pointer;
+}
+
+#btn-start:hover{
+    background:#555;
+}
+
+button{
+    background : #333;
+    color: white;
+    border :none;
+    padding: 0.5rem 1rem;
+    border-radius : 4px;
+    cursor : pointer;
+}
+
+button:hover{
+    background:#555;
+}
+
+#descSection {
+    background: #deebf3;
+    color:#000000 ;
+    border-radius: 15px;
+
+}
+
+#descSectionHeader{
+    background: #3a3a3a;
+    color:#b6b6b6 ;
+    border-radius: 10px;
+}
+

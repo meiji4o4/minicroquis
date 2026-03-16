@@ -1,0 +1,29 @@
+server {
+    listen 80;
+    server_name localhost;
+
+    # Racine de ton projet (où se trouve base.html, base_style.css, etc.)
+    root /mnt/e/projet_c/;   # ou le chemin vers ton dossier sur ta VM
+
+    # Fichier index par défaut
+    index base.html;
+
+    # Servir les fichiers statiques (CSS, JS, images)
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Rediriger les appels API vers ton serveur C
+    location /api/ {
+        proxy_pass http://localhost:8888/api/;
+        proxy_set_header Host $host;
+    }
+
+    # Pour les images servies par ton serveur C (si besoin)
+	location /images/ {
+	    alias /mnt/e/projet_c/dummy_dir/;
+	    # Optionnel : ajouter des en-têtes de cache
+	    expires 1d;
+	    add_header Cache-Control "public";
+	}
+}
