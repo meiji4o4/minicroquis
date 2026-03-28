@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>class mode test</title>
+    <link rel="stylesheet" href="/mnt/e/front/base_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>minicroquis.</h1>
+    </header>
+    <main>
+
+
+    
+        <section class="settings">
+            <div class ="controls">
+                <div>
+                    <label for="playlist">Current playlist :</label>
+                    <select id="playlist">
+                        <option value="default">--Choose a playlist--</option>
+                        <option value="test1">test1</option>
+                        <option value="test2">test2</option>
+                    </select>                    
+                    <button id="btn-load">Show preview</button>
+                </div>
+                
+                <div>
+                    <label for="image_orientation">Image orientation</label>
+                    
+                    <input type="radio" checked value="all" id="all" name="orientation"><label for="all">ALL</label>
+                    <input type="radio" value="portrait" id="portrait" name="orientation"><label for="portrait">Portrait</label>
+                    <input type="radio" value="land" id="land" name="orientation"><label for="land">Landscape</label>
+                </div>
+                <div>
+                    <label for="timing">Timing</label>
+                    <input type="radio" checked value="std" id="std" name="timemode"><label for="std">STANDARD INTERVAL</label>
+                        
+                        <div id="stddurationchoice" style="display: none;">
+                            <p>Display each image for... </p>
+                            <input type="radio" checked value="30s" name="stdclassduration"> 30 seconds
+                            <input type="radio" value="1m" name="stdclassduration"> 1 minute
+                            <input type="radio" value="2m" name="stdclassduration"> 2 minutes
+                            <input type="radio" value="5m" name="stdclassduration"> 5 minutes
+                            <input type="radio" value="10m" name="stdclassduration"> 10 minutes
+                            <input type="radio" value="custom" name="stdclassduration"> Custom time
+                                <div id="setcustomduration">
+                                    <label for="customtime"></label>
+                                    <input type="number" id="customtime">
+                                    <label for="customunit">Interval type</label>
+                                    <select id="customunit">
+                                        <option selected value="seconds">seconds</option>
+                                        <option value="minutes">minutes</option>
+                                    </select>
+                                </div>
+
+                        </div>
+                    <input type="radio" value="classmode" id="classmode" name="timemode"><label for="classmode">CLASS MODE</label>
+                        <div id="classdurationchoice" style="display: none;">
+                            <input type="radio" checked value="30m" name="classduration"> 30 minutes
+                            <input type="radio" value="1h" name="classduration"> 1 hour
+                            <input type="radio" value="1h30" name="classduration"> 1 hour 30 minutes
+                            <input type="radio" value="2h" name="classduration"> 2 hours
+                            <input type="radio" value="3h" name="classduration"> 3 hours
+                            <input type="radio" value="6h" name="classduration"> 6 hours
+                            
+                            <div id="descSection">
+                            <label for="descSection" id="descSectionHeader">Prepare for the following :</label>
+                                <div id="desc30m" class="duration_desc">
+                                    <p>
+                                        10 poses, 30 seconds<br>5 poses, 1 minutes<br>2 poses, 5 minutes<br>1 pose, 10 minutes
+                                    </p>
+                                </div>
+                                <div id="desc1h" class="duration_desc">
+                                    <p>
+                                        10 poses, 30 seconds<br>5 poses, 1 minutes<br>2 poses, 5 minutes<br>1 pose, 10 minutes <br>Break, 5 minutes <br>1 pose, 25 minutes
+                                    </p>
+                                </div>
+                                <div id="desc1h30" class="duration_desc">
+                                    <p>
+                                        6 poses, 30 seconds<br>3 poses, 1 minutes<br>2 poses, 3 minutes<br>1 pose, 10 minutes <br>1 pose, 25 minutes <br>Break, 8 minutes <br>1 pose, 35 minutes
+                                    </p>
+                                </div>
+                                <div id="desc2h" class="duration_desc">
+                                    <p>
+                                        6 poses, 30 seconds<br>3 poses, 1 /div>minutes<br>2 poses, 5 minutes <br>2 poses, 10 minutes <br>1 pose, 20 minutes <br>Break, 14 minutes <br>1 pose, 50 minutes
+                                    </p>
+                                </div>
+                                <div id="desc3h" class="duration_desc">
+                                    <p>
+                                        6 poses, 30 seconds<br>3 poses, 1 minutes<br>2 poses, 5 minutes <br>1 poses, 10 minutes <br>1 pose, 20 minutes <br>Break, 10 minutes <br>2 poses, 30 minutes<br>Break, 10 minutes <br>1 pose, 50 minutes
+                                    </p>
+                                </div>
+                                <div id="desc6h" class="duration_desc">
+                                    <p>
+                                        10 poses, 30 seconds <br>5 poses, 1 minute <br>2 poses, 5 minutes <br>1 pose, 10 minutes <br>1 pose, 20 minutes <br>Break, 10 minutes <br>2 poses, 30 minutes <br>Break, 10 minutes <br>1 pose, 50 minutes <br>Break, 45 minutes <br>4 poses, 30 seconds <br>3 poses, 1 minute <br>2 poses, 5 minutes <br>2 poses, 10 minutes <br>Break, 10 minutes <br>1 pose, 1 hour 30 minutes
+                                    </p>
+                                </div>
+                        </div>
+
+                        </div>
+
+                        
+                </div>
+
+                <div>
+                    <label for="image_limit">Image limit</label>
+                    <label for="n_images">Number of images for the session</label>
+                        <input type="number" id="n_images">
+                </div>
+                    
+            </div>
+                <div id="start">
+                    <button id="btn-start">
+                        <i class="fa-solid fa-circle-play"> START</i>
+
+                    </button>
+                </div>
+            
+        </section>
+        
+        <div id="gallery" class="gallery">
+            
+        </div>
+        <pre id="output" style="display:none"></pre><!-- on cache le JSON brut -->
+    </main>
+    
+    <footer>
+        <small>footer vite fait</small>
+    </footer> 
+
+    <script>
+    const btn = document.getElementById('btn-load'); //serveur voit le bouton
+    const gallery = document.getElementById('gallery');//serveur voit la zone vide où il va poser les photos
+    const output = document.getElementById('output');//serveur voit zone où il écrira si erreurs
+
+    btn.addEventListener('click', async () => { // attend clique bouton
+        gallery.innerHTML = '<p>Chargement des images...</p>';//écrit ça pdt que ça charge
+        output.textContent = ''; // si y a avait msg erreur, effacement
+
+        try { // faire
+            const res = await fetch('/api/images'); 
+            //appelle serveur.c pour la liste d'images en json et attend réponse.
+
+            if (!res.ok) {
+                throw new Error(`Erreur HTTP ${res.status}`);
+                //si PB dans server.c, passe à la phase catch
+            }
+            const data = await res.json();// lecture du json envoyé par server.c
+
+
+            gallery.innerHTML = ''; //vide gallery (enlève "chargement...")
+
+            // Si aucune image
+            if (!data.images || data.images.length === 0) {
+                gallery.innerHTML = '<p>Aucune image trouvée.</p>';
+                return;// arrête fonction
+            }
+
+            
+
+            data.images.forEach(nom => {
+                // Pour chaque nom de fichier, créer une balise img
+                const img = document.createElement('img');
+                //crée image vierge
+                img.src = '/images/' + nom;
+                //adresse image
+                img.alt = nom;
+                //alternative si pb connexion, malvoyants, SEO etc..
+                img.style.maxWidth = '200px';//largeur max
+                img.style.margin = '10px';//espaces entre images
+                img.style.border = '1px solid #ccc';//bordures
+                img.style.borderRadius = '4px';//bordures arrondies
+                //format images
+                gallery.appendChild(img); // ajoute image+style dans <div id="gallery">
+
+            });
+
+        } catch (err) { //si erreur, faire
+            output.textContent = 'Erreur : ' + err.message;
+            gallery.innerHTML = ''; // efface le message de chargement
+        }
+    });
+
+    // --- Gestion du mode (standard/class) ---
+    const std = document.getElementById('std');
+    const classmode = document.getElementById('classmode');
+    const classOptions = document.getElementById('classdurationchoice'); // le bloc des radios de durée
+    const stdOptions= document.getElementById('stddurationchoice')
+    const descSection=document.getElementById('descSection')
+    const descriptions = document.querySelectorAll('.duration_desc');
+    const customDurationBlock = document.getElementById('setcustomduration');
+    const stdDurationRadios= document.querySelectorAll('input[name="stdclassduration"]')
+
+    // Cache toutes les descriptions par défaut (via CSS ou JS)
+    descriptions.forEach(desc => desc.style.display = 'none');
+
+    function updateMenus() {
+        if (std.checked) {
+            classOptions.style.display = 'none';
+            stdOptions.style.display = 'block';
+            updateCustomDurationVisibility();
+            // En mode standard, on cache aussi les descriptions
+            descriptions.forEach(desc => desc.style.display = 'none');
+        } 
+        else {
+            classOptions.style.display = 'block';
+            descSection.style.display='block;';
+            stdOptions.style.display = 'none';
+            // En mode classe, on affiche la description correspondant à la durée sélectionnée
+            updateDurationDesc();
+        }
+    }
+
+    std.addEventListener('change', updateMenus);
+    classmode.addEventListener('change', updateMenus);
+    updateMenus(); // initialisation
+
+    // --- Gestion des durées ---
+    const durationRadios = document.querySelectorAll('input[name="classduration"]');
+
+    function updateDurationDesc() {
+        // Cacher toutes les descriptions
+        descriptions.forEach(desc => desc.style.display = 'none');
+
+        // Trouver le radio coché
+        const checkedRadio = document.querySelector('input[name="classduration"]:checked');
+        if (checkedRadio) {
+            const value = checkedRadio.value; // "30m", "1h", etc.
+            const descId = 'desc' + value;    // "desc30m", "desc1h", etc.
+            const descToShow = document.getElementById(descId);
+            if (descToShow) {
+                descToShow.style.display = 'block';
+            }
+        }
+    }
+
+    // Ajouter les écouteurs sur les radios de durée
+    durationRadios.forEach(radio => {
+        radio.addEventListener('change', updateDurationDesc);
+    });
+
+    // Initialiser l'affichage de la description par défaut (si mode classe actif)
+    if (classmode.checked) {
+        updateDurationDesc();
+    }
+
+    function updateCustomDurationVisibility(){
+        const selected = document.querySelector('input[name="stdclassduration"]:checked');
+        if (selected&&selected.value=='custom'){
+            customDurationBlock.style.display='block';
+        }
+        else {
+            customDurationBlock.style.display = 'none';
+        }
+    }
+    updateCustomDurationVisibility();
+
+    stdDurationRadios.forEach(radio =>{
+        radio.addEventListener('change',updateCustomDurationVisibility)
+    });
+
+    
+    
+</script>
+</body>
+</html> 

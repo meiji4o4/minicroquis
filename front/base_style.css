@@ -16,17 +16,61 @@ header{
 }
 
 main {
-    display:flex;
-    gap:2rem;
-    padding: 1rem;
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+  width: 100%;
+  align-items: flex-start;
 }
 
 .settings {
-    flex:  0px 0px 0px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 #gallery {
-    flex: 1;
+  flex: 0 0 260px;   /* largeur fixe */
+  width: 260px;
+  max-height: 500px;
+  overflow-y: auto;  /* scroll conservé */
+  overflow-x: hidden;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
+@media (max-width: 800px) {
+  main {
+    flex-direction: column;
+  }
+
+  .settings,
+  #gallery {
+    width: 100%;
+    flex: none;
+  }
+
+  #gallery {
+    max-height: 400px;
+  }
+}
+
+
+.gallery img:hover {
+    transform: scale(1.02);
+    border-color: #b8e5ff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
 }
 
 .controls > div {

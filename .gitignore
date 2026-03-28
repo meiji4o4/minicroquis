@@ -1,35 +1,17 @@
 # Fichiers compilés
-css_refresh
-server
-serv
-mon_serveur
-
-# Environnement Python
-venv/
-__pycache__/
-*.pyc
-
-# Fichiers générés
-base_template.html
+bin/
 
 # Fichiers temporaires
 *.swp
 *.swx
 *~
-.DS_Store
 
 # Config éditeur
 .vscode/
-#refresh
-css_refresh.c
-# Fichiers de backup / anciennes versions
-* copy.*
-*old*
-*BEFORE*
-*\[BEFORE*\]*   # Pour échapper les crochets si nécessaire
+
+# Archives
+archive/
+
 
 # Fichiers de test et notes personnelles
-neovim_test.txt
-testing_inotifywait.txt
 notes.txt
-test.txt
