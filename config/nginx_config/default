@@ -2,34 +2,34 @@ server {
     listen 80;
     server_name localhost;
 
-    # Racine
+    # racine
     root /mnt/e/projet_c/front;  
 
-    # Fichier index par défaut
+    # fichier index par défaut
     index base_exe.html;
     add_header Cache-Control "no-cache, no-store, must-revalidate";
 
-    # Pour les fichiers CSS et JS :
+    # pour les fichiers CSS et JS :
     location ~* \.(css|js)$ {
         expires 1m;
         add_header Cache-Control "public, must-revalidate";
     }
 
-    # Servir les fichiers statiques (CSS, JS, images)
+    # servir les fichiers statiques (CSS, JS, images)
     location / {
         try_files $uri $uri/ =404;
     }
 
-    # Rediriger les appels API vers ton serveur C
+    # appel api
     location /api/ {
         proxy_pass http://localhost:8888/api/;
         proxy_set_header Host $host;
     }
 
-    # Pour les images servies par ton serveur C (si besoin)
+    # pour les images servies par server C
 	location /images/ {
 	    alias /mnt/e/projet_c/dummy_dir/;
-	    # Optionnel : ajouter des en-têtes de cache
+	    
 	    expires 10m;
 	    add_header Cache-Control "public";
 	}
