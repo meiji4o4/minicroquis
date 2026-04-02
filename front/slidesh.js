@@ -43,12 +43,16 @@ function stopTimer() {
 function stopSlideshow() {
     stopTimer();
     const gallery = document.getElementById('gallery');
-    if (slideshowContainer) slideshowContainer.style.display = 'none';
+    if (slideshowContainer) {
+        if (elementImage) elementImage.remove();
+        const buttonsDiv = slideshowContainer.querySelector('.buttons');
+        if (buttonsDiv) buttonsDiv.innerHTML = '';
+        slideshowContainer.style.display = 'none';
+    }
     if (gallery) {
         gallery.style.display = 'block';
         gallery.innerHTML = oldContent;
     }
-    // Réinitialiser les variables globales
     imagesList2 = [];
     indexNow = 0;
     pause = false;
@@ -154,15 +158,13 @@ export function startSlideSh(images, durationMs, limit) {
     // Sauvegarder l'état de la galerie
     oldContent = gallery.innerHTML;
     gallery.style.display = 'none';
-    containerDiv.style.display = 'block';
+    containerDiv.style.display = 'flex';
 
     // Supprimer l'ancienne image si elle existe (pour éviter les doublons)
     if (elementImage) elementImage.remove();
 
     // Créer la nouvelle image
     elementImage = document.createElement('img');
-    elementImage.style.maxWidth = '100%';
-    elementImage.style.maxHeight = '70vh';
     containerDiv.appendChild(elementImage);
 
     // Récupérer la div .buttons existante (définie dans le HTML)
