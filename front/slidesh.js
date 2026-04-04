@@ -6,6 +6,8 @@ let durationGlobal = 0;
 let elementImage = null;
 let slideshowContainer = null;  // on renomme pour éviter confusion
 let oldContent = '';
+    
+
 
 function showImage(index) {
     if (!elementImage) return;
@@ -21,10 +23,10 @@ function next() {
     if (indexNow < imagesList2.length) {
         showImage(indexNow);
         startTimer();
-    } else {
-        stopSlideshow();
     }
 }
+
+
 
 function startTimer() {
     if (timerId) clearTimeout(timerId);
@@ -38,6 +40,15 @@ function stopTimer() {
         clearTimeout(timerId);
         timerId = null;
     }
+}
+
+
+let timer=document.createElement('');
+if (timer) timer.textContent='';
+
+function startCountdown(durationMs,timerContainer){
+    if (countdownInterval) clearInterval(countdownInterval);
+    let remaining=Math.ceil(durationMs)
 }
 
 function stopSlideshow() {
@@ -147,6 +158,15 @@ function createControls(container) {
 
 
 
+
+
+
+
+
+
+
+
+
 export function startSlideSh(images, durationMs, limit) {
     const gallery = document.getElementById('gallery');
     const containerDiv = document.getElementById('slideshow-container');
@@ -169,6 +189,8 @@ export function startSlideSh(images, durationMs, limit) {
 
     // Récupérer la div .buttons existante (définie dans le HTML)
     const buttonsDiv = containerDiv.querySelector('.buttons');
+    const timerDiv= containerDiv.querySelector('timer');
+    
     if (!buttonsDiv) {
         console.error(".buttons not found inside slideshow-container");
         return;
@@ -177,10 +199,11 @@ export function startSlideSh(images, durationMs, limit) {
     buttonsDiv.innerHTML = '';
     // Créer les contrôles dans cette div
     createControls(buttonsDiv);
+    createControls(timerDiv);
 
     // Initialiser les données
     imagesList2 = images.slice(0, limit);
-    durationGlobal = durationMs;
+    durationGlobal = durationSeconds*1000;
     indexNow = 0;
     pause = false;
     slideshowContainer = containerDiv;

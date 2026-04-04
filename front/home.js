@@ -140,28 +140,28 @@ const start = document.getElementById('btn-start')
 
 start.addEventListener('click', ()=> {
     const selectedDuration = document.querySelector('input[name=stdclassduration]:checked');
-    let durationMs= 30000;
+
+    let durationSec= 30;
 
     if(selectedDuration){
-        if(selectedDuration=='custom'){
+        if(selectedDuration.value=='custom'){
 
             const customTime= document.getElementById("customtime").value;
             const customUnit= document.getElementById("customunit").value;
-            let durationSec=parseFloat(customTime);
-            if (isNaN(durationSec)) durationSec=30;
-            if (customUnit=='minutes') durationSec=durationSec*60;
-            durationMs=durationSec*1000;
-
-        }
-
+            let val=parseFloat(customTime);
+            if (isNaN(val)) val=30;
+            durationSeconds = (unit ==='minutes')? val*60 : val;
+            }
         else {
-            let val = selectedDuration.value;
-            let seconds=0;
-            if(val.endsWith('s'))seconds = parseInt(val);
-            else if (val.endsWith('m'))seconds=parseInt(val)*60;
-            durationMs=seconds*1000;
-        }
+            const val= selectedDuration.value;
+            if (val.endsWith('s')) durationSec=parseInt(val);
+            else if (val.endsWith('m')) durationSec=parseInt(val)*60;
+
+
+        }  
+
     }
+
 
     let limit = document.getElementById('n_images').value;
     limit=parseInt(limit);
@@ -174,6 +174,6 @@ start.addEventListener('click', ()=> {
     
     }
 
-    startSlideSh(imagesList1,durationMs,limit);
+    startSlideSh(imagesList1,durationSec,limit);
 }
 );
