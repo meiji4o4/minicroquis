@@ -242,22 +242,37 @@ function buildStandardSequence(images, durationSec) {
   }));
 }
 
+
+function shuffleArray(array) {
+  const copy = [...array];
+
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+
+  return copy;
+}
+
+
+
 function startPreviewSlideshow() {
   if (!imagesList1.length) {
     alert("No image loaded. Click on 'Show preview' first.");
     return;
   }
 
-  const selectedImages = imagesList1.slice(0, getImageLimit());
-  let sequence = [];
+    const selectedImages = imagesList1.slice(0, getImageLimit());
+    const shuffledImages = shuffleArray(selectedImages);
+    let sequence = [];
 
-  if (std && std.checked) {
+    if (std && std.checked) {
     const durationSec = getStandardDurationSeconds();
-    sequence = buildStandardSequence(selectedImages, durationSec);
-  } else {
+    sequence = buildStandardSequence(shuffledImages, durationSec);
+    } else {
     const presetKey = getSelectedClassPresetKey();
-    sequence = buildClassSequence(selectedImages, presetKey);
-  }
+    sequence = buildClassSequence(shuffledImages, presetKey);
+    }
 
   if (!sequence.length) {
     setOutput('Impossible de construire la séquence.');
@@ -295,5 +310,8 @@ classDurationRadios.forEach((radio) => {
 descriptions.forEach((desc) => {
   desc.style.display = 'none';
 });
+
+const selectedImages = imagesList1.slice(0, getImageLimit());
+const shuffledImages = shuffleArray(selectedImages);
 
 updateMenus();
