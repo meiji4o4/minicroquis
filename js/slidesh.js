@@ -1,6 +1,6 @@
 let sequenceList = [];
 let sequenceIndex = 0; // position "réelle" dans la séquence (pose / pause)
-let viewIndex = 0;     // position de l'image affichée quand on clique sur Suivant/Précédent
+let viewIndex = 0; // position de l'image affichée quand on clique sur Suivant/Précédent
 
 let timerId = null;
 let countdownInterval = null;
@@ -16,7 +16,7 @@ let suivantBtn = null;
 let precedentBtn = null;
 let poseBtn = null; // nouveau bouton "Pose suivante" (avance réellement la séquence)
 
-let statusElement = null;   // overlay "Pause"
+let statusElement = null; // overlay "Pause"
 let progressElement = null; // indicateur de progression (pose X/Y, reste Z)
 
 function formatTime(seconds) {
@@ -58,8 +58,7 @@ function updateButtonsState() {
   }
 
   if (suivantBtn) {
-    const nextIndex = findImageIndex(viewIndex + 1, 1);
-    suivantBtn.disabled = nextIndex === -1;
+    suivantBtn.disabled = false;
   }
 
   if (poseBtn) {
@@ -331,14 +330,58 @@ function advancePose() {
   startTimer(true);
 }
 
+function shuffleArray(array) {
+  const copy = [...array];
+
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+
+  return copy;
+}
+
+function reshuffleImagesInSequence() {
+  const imageNames = sequenceList
+    .filter((item) => item.type === 'image')
+    .map((item) => item.name);
+
+  if (imageNames.length <= 1) return;
+
+  const shuffledNames = shuffleArray(imageNames);
+  let imageCursor = 0;
+
+  sequenceList = sequenceList.map((item) => {
+    if (item.type !== 'image') return item;
+
+    return {
+      ...item,
+      name: shuffledNames[imageCursor++]
+    };
+  });
+}
+
 // Navigation d'images uniquement (ne change pas la pose courante)
 function nextImageOnly() {
-  const nextIndex = findImageIndex(viewIndex + 1, 1);
+  let nextIndex = findImageIndex(viewIndex + 1, 1);
+
+  if (nextIndex === -1) {
+    reshuffleImagesInSequence();
+    nextIndex = findImageIndex(0, 1);
+  }
+
   if (nextIndex === -1) return;
 
   viewIndex = nextIndex;
   renderCurrentItem();
-  startTimer(true);
+
+  if (!pause) {
+    startTimer(true);
+  } else {
+    const item = getCurrentItem();
+    remainingSeconds = item?.duration ?? 0;
+    updateTimerDisplay();
+  }
 }
 
 function previousImageOnly() {
@@ -347,7 +390,14 @@ function previousImageOnly() {
 
   viewIndex = prevIndex;
   renderCurrentItem();
-  startTimer(true);
+
+  if (!pause) {
+    startTimer(true);
+  } else {
+    const item = getCurrentItem();
+    remainingSeconds = item?.duration ?? 0;
+    updateTimerDisplay();
+  }
 }
 
 function createControls(container) {
@@ -430,8 +480,8 @@ export function startSlideSh(sequence) {
     console.error('Sequence has no images');
     return;
   }
-  viewIndex = firstImageIndex;
 
+  viewIndex = firstImageIndex;
   pause = false;
 
   const firstItem = getCurrentItem();

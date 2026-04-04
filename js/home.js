@@ -74,6 +74,7 @@ async function loadImages() {
 
   try {
     const res = await fetch('/api/images');
+
     if (!res.ok) {
       throw new Error(`Erreur HTTP ${res.status}`);
     }
@@ -242,7 +243,6 @@ function buildStandardSequence(images, durationSec) {
   }));
 }
 
-
 function shuffleArray(array) {
   const copy = [...array];
 
@@ -254,25 +254,24 @@ function shuffleArray(array) {
   return copy;
 }
 
-
-
 function startPreviewSlideshow() {
   if (!imagesList1.length) {
     alert("No image loaded. Click on 'Show preview' first.");
     return;
   }
 
-    const selectedImages = imagesList1.slice(0, getImageLimit());
-    const shuffledImages = shuffleArray(selectedImages);
-    let sequence = [];
+  const selectedImages = imagesList1.slice(0, getImageLimit());
+  const shuffledImages = shuffleArray(selectedImages);
 
-    if (std && std.checked) {
+  let sequence = [];
+
+  if (std && std.checked) {
     const durationSec = getStandardDurationSeconds();
     sequence = buildStandardSequence(shuffledImages, durationSec);
-    } else {
+  } else {
     const presetKey = getSelectedClassPresetKey();
     sequence = buildClassSequence(shuffledImages, presetKey);
-    }
+  }
 
   if (!sequence.length) {
     setOutput('Impossible de construire la séquence.');
@@ -310,8 +309,5 @@ classDurationRadios.forEach((radio) => {
 descriptions.forEach((desc) => {
   desc.style.display = 'none';
 });
-
-const selectedImages = imagesList1.slice(0, getImageLimit());
-const shuffledImages = shuffleArray(selectedImages);
 
 updateMenus();

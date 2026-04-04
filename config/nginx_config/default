@@ -3,10 +3,10 @@ server {
     server_name localhost;
 
     # racine
-    root /mnt/e/projet_c/front;  
+    root /mnt/e/projet_c/;  
 
     # fichier index par défaut
-    index base_exe.html;
+    index index.html;
     add_header Cache-Control "no-cache, no-store, must-revalidate";
 
     # pour les fichiers CSS et JS :

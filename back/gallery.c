@@ -35,7 +35,7 @@ char* liste_images_en_json(char* chemin_du_dossier) {
         
         
         if (point != NULL) {
-            if (strcmp(point, ".jpg") == 0 || strcmp(point, ".png") == 0) {
+            if (strcmp(point, ".jpg") == 0 ||strcmp(point, ".jpeg") == 0 || strcmp(point, ".png") == 0 || strcmp(point, ".jfif") == 0 || strcmp(point, ".tiff") == 0 || strcmp(point, ".webp") == 0 || strcmp(point, ".svg") == 0)  {
 
                 if (!premier) {
                     strcat(ma_feuille_json, ",");
