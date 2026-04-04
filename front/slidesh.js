@@ -30,25 +30,45 @@ function next() {
 
 function startTimer() {
     if (timerId) clearTimeout(timerId);
+    if(countdownInterval)clearInterval(countdownInterval);
     if (!pause) {
-        timerId = setTimeout(next, durationGlobal);
+        startCountdown(durationGlobal)
+        timerId = setTimeout(next, durationGlobal*1000);
     }
 }
 
 function stopTimer() {
-    if (timerId) {
-        clearTimeout(timerId);
-        timerId = null;
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval=null;
+        
     }
 }
 
 
-let timer=document.createElement('');
+let timer=containerDiv.querySelector('');
 if (timer) timer.textContent='';
 
-function startCountdown(durationMs,timerContainer){
+function formatTime(seconds){
+    const mins=Math.floor(seconds/60);
+    const secs= seconds %60;
+    const minutesStr=mins<10?'0'+minutes:''+mins;
+    const secondsStr=secs<10?'0'+secs:''+secs;
+    return minutesStr+':'+secondsStr;
+}
+
+
+function startCountdown(remainingSecs){
     if (countdownInterval) clearInterval(countdownInterval);
-    let remaining=Math.ceil(durationMs)
+    if(timer)timer.textContent=formatTime(remainingSecs);
+    countdownInterval=setInterval(() => {
+        if(!pause && remainingSecs>0){
+            remainingSecs--;
+            if(timer)timer.textContent=formatTime(remainingSecs);
+            if(remainingSecs==0) clearInterval(countdownInterval);
+        }
+    }, 1000);
+
 }
 
 function stopSlideshow() {
