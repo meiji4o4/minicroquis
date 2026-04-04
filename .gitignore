@@ -16,3 +16,4 @@ archive/
 # Fichiers de test et notes personnelles
 notes.txt
 dummy_dir/*
+!dummy_dir/.gitkeep
