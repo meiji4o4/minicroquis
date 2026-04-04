@@ -9,13 +9,37 @@ const output = document.getElementById('output');
 
 const std = document.getElementById('std');
 const classmode = document.getElementById('classmode');
+
 const classOptions = document.getElementById('classdurationchoice');
 const stdOptions = document.getElementById('stddurationchoice');
 const descSection = document.getElementById('descSection');
 const descriptions = document.querySelectorAll('.duration_desc');
+
 const customDurationBlock = document.getElementById('setcustomduration');
 const stdDurationRadios = document.querySelectorAll('input[name="stdclassduration"]');
 const classDurationRadios = document.querySelectorAll('input[name="classduration"]');
+
+const CLASS_PRESETS = {
+  '30m': ['10x30s', '5x1m', '2x5m', '1x10m'],
+  '1h': ['10x30s', '5x1m', '2x5m', '1x10m', 'break:5m', '1x25m'],
+  '1h30': ['6x30s', '3x1m', '2x3m', '1x10m', '1x25m', 'break:8m', '1x35m'],
+  '2h': ['6x30s', '3x1m', '2x5m', '2x10m', '1x20m', 'break:14m', '1x50m'],
+  '3h': ['6x30s', '3x1m', '2x5m', '1x10m', '1x20m', 'break:10m', '2x30m', 'break:10m', '1x50m'],
+  '6h': [
+    '10x30s', '5x1m', '2x5m', '1x10m', '1x20m',
+    'break:10m',
+    '2x30m',
+    'break:10m',
+    '1x50m',
+    'break:45m',
+    '4x30s', '3x1m', '2x5m', '2x10m',
+    'break:10m',
+    '1x1h30m'
+  ]
+};
+
+/* Je découvre ici l'utilisation du parsing, d'où cette mise en forme.
+   Dans une situation réelle, je pense simplement utiliser une structure plus "objet" pour les presets. */
 
 function setOutput(message = '') {
   if (!output) return;
@@ -25,6 +49,7 @@ function setOutput(message = '') {
 
 function renderPreview(images) {
   if (!gallery) return;
+
   gallery.innerHTML = '';
 
   if (!images.length) {
@@ -81,7 +106,8 @@ function updateCustomDurationVisibility() {
   const selected = document.querySelector('input[name="stdclassduration"]:checked');
   if (!customDurationBlock) return;
 
-  customDurationBlock.style.display = selected && selected.value === 'custom' ? 'block' : 'none';
+  customDurationBlock.style.display =
+    selected && selected.value === 'custom' ? 'block' : 'none';
 }
 
 function updateMenus() {
@@ -117,6 +143,7 @@ function getStandardDurationSeconds() {
   }
 
   const raw = selected.value.trim();
+
   if (raw.endsWith('s')) return Number.parseInt(raw, 10) || 30;
   if (raw.endsWith('m')) return (Number.parseInt(raw, 10) || 1) * 60;
 
@@ -134,22 +161,111 @@ function getImageLimit() {
   return Math.min(value, imagesList1.length);
 }
 
+function parseDuration(text) {
+  let total = 0;
+  const matches = text.matchAll(/(\d+)(h|m|s)/g);
+
+  for (const match of matches) {
+    const value = Number(match[1]);
+    const unit = match[2];
+
+    if (unit === 'h') total += value * 3600;
+    if (unit === 'm') total += value * 60;
+    if (unit === 's') total += value;
+  }
+
+  return total;
+}
+
+function getSelectedClassPresetKey() {
+  const checked = document.querySelector('input[name="classduration"]:checked');
+  return checked ? checked.value : null;
+}
+
+function parsePresetItem(item) {
+  // Déclare une fonction qui reçoit une chaîne, par ex. "10x30s"
+  if (item.startsWith('break:')) {
+    // Si la chaîne commence par "break:"
+    return {
+      // on renvoie immédiatement un objet
+      type: 'break', // type = pause
+      duration: parseDuration(item.slice(6)) // on enlève "break:" puis on convertit le reste en secondes
+    };
+  }
+
+  const match = item.match(/^(\d+)x(.+)$/); // Essaie de lire un format comme "10x30s"
+  if (!match) return null; // Si le format ne correspond pas, on renvoie null
+
+  return {
+    // Sinon on renvoie un objet "bloc d'images"
+    type: 'image-block', // type = bloc d'images
+    count: Number(match[1]), // match[1] = le nombre avant le x, ex "10" -> 10
+    duration: parseDuration(match[2]) // match[2] = la durée après le x, ex "30s" -> 30
+  };
+}
+
+function buildClassSequence(images, presetKey) {
+  const preset = CLASS_PRESETS[presetKey];
+  if (!preset) return [];
+
+  const sequence = [];
+  let imageIndex = 0;
+
+  for (const rawItem of preset) {
+    const item = parsePresetItem(rawItem);
+    if (!item) continue;
+
+    if (item.type === 'break') {
+      sequence.push(item);
+      continue;
+    }
+
+    for (let i = 0; i < item.count && imageIndex < images.length; i += 1) {
+      sequence.push({
+        type: 'image',
+        name: images[imageIndex],
+        duration: item.duration
+      });
+
+      imageIndex += 1;
+    }
+  }
+
+  return sequence;
+}
+
+function buildStandardSequence(images, durationSec) {
+  return images.map((name) => ({
+    type: 'image',
+    name,
+    duration: durationSec
+  }));
+}
+
 function startPreviewSlideshow() {
   if (!imagesList1.length) {
     alert("No image loaded. Click on 'Show preview' first.");
     return;
   }
 
-  let durationSec = 30;
+  const selectedImages = imagesList1.slice(0, getImageLimit());
+  let sequence = [];
 
   if (std && std.checked) {
-    durationSec = getStandardDurationSeconds();
+    const durationSec = getStandardDurationSeconds();
+    sequence = buildStandardSequence(selectedImages, durationSec);
   } else {
-    setOutput('Mode class : lecture avec intervalle fixe de 30 secondes (logique avancée non définie dans le JS fourni).');
+    const presetKey = getSelectedClassPresetKey();
+    sequence = buildClassSequence(selectedImages, presetKey);
   }
 
-  const limit = getImageLimit();
-  startSlideSh(imagesList1, durationSec, limit);
+  if (!sequence.length) {
+    setOutput('Impossible de construire la séquence.');
+    return;
+  }
+
+  setOutput('');
+  startSlideSh(sequence);
 }
 
 if (btnLoad) {
@@ -160,8 +276,13 @@ if (btnStart) {
   btnStart.addEventListener('click', startPreviewSlideshow);
 }
 
-if (std) std.addEventListener('change', updateMenus);
-if (classmode) classmode.addEventListener('change', updateMenus);
+if (std) {
+  std.addEventListener('change', updateMenus);
+}
+
+if (classmode) {
+  classmode.addEventListener('change', updateMenus);
+}
 
 stdDurationRadios.forEach((radio) => {
   radio.addEventListener('change', updateCustomDurationVisibility);
