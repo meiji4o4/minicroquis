@@ -147,3 +147,14 @@ button:hover{
     right: 0;
     text-align: center;
 }
+
+#slideshow-container .timer {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+}
