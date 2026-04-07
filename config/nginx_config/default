@@ -4,7 +4,10 @@ server {
 
     # racine
     root /mnt/e/projet_c/;  
-
+    
+    # désac sendfiles
+    sendfile off;
+    
     # fichier index par défaut
     index index.html;
     add_header Cache-Control "no-cache, no-store, must-revalidate";
